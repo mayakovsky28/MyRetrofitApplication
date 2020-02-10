@@ -8,15 +8,19 @@ import com.google.gson.annotations.SerializedName;
 
 public class Story {
 
+    @SerializedName("url")
     private String url;
 
+    @SerializedName("byline")
     private String byLine;
 
+    @SerializedName("title")
     private String title;
 
     @SerializedName("abstract")
     private String briefDescription;
 
+    @SerializedName("published_date")
     private String publishedDate;
 
     public String getUrl() {

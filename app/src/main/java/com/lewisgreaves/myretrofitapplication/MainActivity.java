@@ -6,7 +6,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,29 +31,35 @@ public class MainActivity extends AppCompatActivity {
 
         StoryService storyService = retrofit.create(StoryService.class);
         String APIKEY = "y40F98cVAqyMCBFpoq3gdvGAdGXQjj61";
-        Call<List<Story>> call = storyService.getStories(1, APIKEY);
+        Call<AnyResponse> call = storyService.getMostPopularStories(1, APIKEY);
+        Call<AnyResponse> call1 = storyService.getTopStories("home", APIKEY);
 
-        call.enqueue(new Callback<List<Story>>() {
+        call.enqueue(new Callback<AnyResponse>() {
 
             @Override
-            public void onResponse(Call<List<Story>> call, Response<List<Story>> response) {
+            public void onResponse(Call<AnyResponse> call, Response<AnyResponse> response) {
                 if(!response.isSuccessful()) {
                     activityMainTextView.setText("code: " + response.code());
                     return;
                 }
 
-                List<Story> stories = response.body();
+                List<Story> stories = response.body().getResults();
 
                 for(Story story : stories) {
                     String content = "";
                     content += "Title: " + story.getTitle() + "\n";
-                    content += "By Line: " + story.getByLine() + "\n\n";
+                    content += "By Line: " + story.getByLine() + "\n";
+                    content += "URL: " + story.getUrl() + "\n";
+                    content += "Abstract: " + story.getBriefDescription() + "\n";
+                    content += "Published date: " + story.getPublishedDate() + "\n\n";
                     activityMainTextView.append(content);
                 }
             }
 
+
+
             @Override
-            public void onFailure(Call<List<Story>> call, Throwable t) {
+            public void onFailure(Call<AnyResponse> call, Throwable t) {
                 activityMainTextView.setText(t.getMessage());
             }
         });
