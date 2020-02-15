@@ -4,7 +4,12 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,14 +25,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link TopStoriesFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link TopStoriesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class TopStoriesFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,9 +34,6 @@ public class TopStoriesFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
-
     private TextView topStoriesFragmentTextView;
 
     public TopStoriesFragment() {
@@ -71,7 +65,7 @@ public class TopStoriesFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
 
-            topStoriesFragmentTextView = findViewById(R.id.top_stories_fragment_text_view);
+            topStoriesFragmentTextView = getView().findViewById(R.id.top_stories_fragment_text_view);
 
             String BASEURL = "https://api.nytimes.com/svc/";
             Retrofit retrofit = new Retrofit.Builder()
@@ -87,79 +81,33 @@ public class TopStoriesFragment extends Fragment {
 
                 @Override
                 public void onResponse(Call<AnyResponse> call, Response<AnyResponse> response) {
-                    if(!response.isSuccessful()) {
-                        activityMainTextView.setText("code: " + response.code());
+                    if (!response.isSuccessful()) {
+                        topStoriesFragmentTextView.setText("code: " + response.code());
                         return;
                     }
 
                     List<Story> stories = response.body().getResults();
 
-                    for(Story story : stories) {
+                    for (Story story : stories) {
                         String content = "";
                         content += "Title: " + story.getTitle() + "\n";
                         content += "By Line: " + story.getByLine() + "\n";
                         content += "URL: " + story.getUrl() + "\n";
                         content += "Abstract: " + story.getBriefDescription() + "\n";
                         content += "Published date: " + story.getPublishedDate() + "\n\n";
-                        activityMainTextView.append(content);
+                        topStoriesFragmentTextView.append(content);
                     }
                 }
 
 
-
                 @Override
                 public void onFailure(Call<AnyResponse> call, Throwable t) {
-                    activityMainTextView.setText(t.getMessage());
+                    topStoriesFragmentTextView.setText(t.getMessage());
                 }
             });
         }
 
-        }
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_top_stories, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }
+

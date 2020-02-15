@@ -2,11 +2,12 @@ package com.lewisgreaves.myretrofitapplication;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /*
  * Created by @Mayakovsky28 on 02 02 2020.
  */
-
-public class Story {
+public class Story implements Serializable {
 
     @SerializedName("url")
     private String url;
