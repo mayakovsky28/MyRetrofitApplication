@@ -9,6 +9,7 @@ import java.util.List;
 /*
  * Created by @Mayakovsky28 on 15 02 2020.
  */
+
 public class PagerAdapter extends FragmentPagerAdapter {
 
     private List<Story> stories;
@@ -25,7 +26,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return (PageFragment.newInstance(this.stories));
+        return (PageFragment.newInstance(constants.sectionNames[position]));
     }
 
     @Override

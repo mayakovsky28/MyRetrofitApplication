@@ -6,8 +6,11 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-    private Story[] stories;
+    private List<Story> stories;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -22,7 +25,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(Story[] stories) {
+    public MyAdapter(List<Story> stories) {
         this.stories = stories;
     }
 
@@ -34,7 +37,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         TextView textView = (TextView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.story, parent, false);
 
-        textView.setText("Page number " + stories.length+"\n");
+        textView.setText("Page number " + stories.size()+"\n");
         for (Story story : stories) {
             textView.append(story.getTitle()+"\n");
         }
@@ -48,13 +51,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.textView.setText(stories[position].getTitle());
+        holder.textView.setText(stories.get(position).getTitle());
 
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return stories.length;
+        if (stories == null) return 0;
+        else return stories.size();
     }
 }

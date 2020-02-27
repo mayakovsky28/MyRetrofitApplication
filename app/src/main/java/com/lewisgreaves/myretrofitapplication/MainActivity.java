@@ -21,7 +21,6 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView activityMainTextView;
     private DrawerLayout drawerLayout;
 
     @Override
@@ -36,46 +35,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
 
-        activityMainTextView = findViewById(R.id.activity_main_text_view);
-
         this.configureDrawerLayout();
-
-        ApiRequest.callMostPopularStories().enqueue(new Callback<AnyResponse>() {
-
-            @Override
-            public void onResponse(Call<AnyResponse> call, Response<AnyResponse> response) {
-                if(!response.isSuccessful()) {
-                    activityMainTextView.setText("code: " + response.code());
-                    return;
-                }
-
-                List<Story> stories = response.body().getResults();
-                viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), stories));
-            }
-
-            @Override
-            public void onFailure(Call<AnyResponse> call, Throwable t) {
-                activityMainTextView.setText(t.getMessage());
-            }
-        });
-
-//        ApiRequest.callTopStories(section).enqueue(new Callback<AnyResponse>() {
-//            @Override
-//            public void onResponse(Call<AnyResponse> call, Response<AnyResponse> response) {
-//                if(!response.isSuccessful()) {
-//                    activityMainTextView.setText("code: " +response.code());
-//                    return;
-//                }
-//                List<Story> stories = response.body().getResults();
-//                viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), stories));
-//            }
-//
-//            @Override
-//            public void onFailure(Call call, Throwable t) {
-//                activityMainTextView.setText(t.getMessage());
-//
-//            }
-//        });
     }
 
     @Override

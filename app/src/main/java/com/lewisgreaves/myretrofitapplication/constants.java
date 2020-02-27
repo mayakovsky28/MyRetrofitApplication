@@ -6,4 +6,6 @@ package com.lewisgreaves.myretrofitapplication;
 public class constants {
     static String [] sectionNames = new String[] {"Top Stories", "Most Popular Stories", "3", "4", "5"};
 
+    public static final String KEY_SECTION_NAME = "KEY_SECTION_NAME";
+
 }
