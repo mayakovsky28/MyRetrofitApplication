@@ -29,7 +29,7 @@ public class PageFragment extends Fragment {
     private MyAdapter myAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private StoryService storyService = StoryService.retrofit.create(StoryService.class);
-    private List<Story> stories;
+    private List<Story> stories = new ArrayList<>();
 
     public PageFragment() {
         // Required empty public constructor

@@ -50,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
 //    @Override
 //    public boolean onNavigationItemSelected(MenuItem item) {
 //        int id = item.getItemId();
-//        switch(id) {
+//        switch (id) {
 //            case R.id.activity_main_drawer_news:
 //                this.showFragment(FRAGMENT_NEWS);
 //                break;
 //            case R.id.activity_main_drawer_profile:
-//                this.showFragment(FRAGMENT_PROFILE);
+//                this.showFragment();
 //                break;
 //            case R.id.activity_main_drawer_settings:
 //                this.showFragment(FRAGMENT_SETTINGS);
@@ -64,17 +64,17 @@ public class MainActivity extends AppCompatActivity {
 //                break;
 //
 //        }
-//
+
 //        this.drawerLayout.closeDrawer(GravityCompat.START);
 //
 //        return true;
-//    }
+//   }
 
-    private void configureDrawerLayout() {
-        this.drawerLayout = findViewById(R.id.activity_main_drawer);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-    }
+        private void configureDrawerLayout () {
+            this.drawerLayout = findViewById(R.id.activity_main_drawer);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawerLayout.addDrawerListener(toggle);
+            toggle.syncState();
+        }
 
 }
