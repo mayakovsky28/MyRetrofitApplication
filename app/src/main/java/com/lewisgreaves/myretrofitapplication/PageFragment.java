@@ -58,15 +58,31 @@ public class PageFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         // specify an adapter (see also next example)
-        MyAdapter adapter = new MyAdapter(stories);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(myAdapter);
 
+        if (getArguments() != null) {
+            String selectedSection = getArguments().getString(constants.KEY_SECTION_NAME, constants.sectionNames[0]);
+            switch (selectedSection) {
+                case "Most Popular Stories":
+                    callMostPopularStories();
+                    break;
+                default:
+                    callTopStories(selectedSection);
+                    break;
+            }
+        }
+
+        return result;
+    }
+
+    public void callMostPopularStories() {
         ApiRequest.callMostPopularStories().enqueue(new Callback<AnyResponse>() {
 
             @Override
             public void onResponse(Call<AnyResponse> call, Response<AnyResponse> response) {
+                stories.clear();
                 stories.addAll(response.body().getResults());
-                adapter.notifyDataSetChanged();
+                myAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -74,25 +90,39 @@ public class PageFragment extends Fragment {
                 Log.d("ERROR", t.toString());
             }
         });
+    }
 
-//        ApiRequest.callTopStories(section).enqueue(new Callback<AnyResponse>() {
-//            @Override
-//            public void onResponse(Call<AnyResponse> call, Response<AnyResponse> response) {
-//                if(!response.isSuccessful()) {
-//                    activityMainTextView.setText("code: " +response.code());
-//                    return;
-//                }
-//                List<Story> stories = response.body().getResults();
-//                viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), stories));
-//            }
-//
-//            @Override
-//            public void onFailure(Call call, Throwable t) {
-//                activityMainTextView.setText(t.getMessage());
-//
-//            }
-//        });
+    public void callTopStories(String section) {
+        Call<AnyResponse> call;
+        switch (section) {
+            case "Arts":
+                call = ApiRequest.callTopStories("arts");
+                break;
+            case "Business":
+                call = ApiRequest.callTopStories("business");
+                break;
+            case "Sports":
+                call = ApiRequest.callTopStories("sports");
+                break;
+            default:
+                call = ApiRequest.callTopStories("home");
+                break;
 
-        return result;
+        }
+        call.enqueue(new Callback<AnyResponse>() {
+
+            @Override
+            public void onResponse(Call<AnyResponse> call, Response<AnyResponse> response) {
+                stories.clear();
+//                stories.addAll(response.body().getResults());
+                myAdapter.notifyDataSetChanged();
+                }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                Log.d("ERROR", t.toString());
+            }
+        });
+
     }
 }
